@@ -1,117 +1,137 @@
 from tkinter import *
+import tkinter.messagebox as tmb
+
+#& All functions
+def click(event):
+    global scvalue
+    text = event.widget.cget("text")
+    if text == "=":
+        if scvalue.get().isdigit():
+            value = int(scvalue.get())
+        else:
+            try:
+                value = eval(screen.get())
+
+            except Exception as e:
+                print(e)
+                err=tmb.showerror("ERROR ENCOUNTERED","SORRY, An Error Occured,\n Please Check Your Input.")
+        scvalue.set(value)
+        screen.update()
+
+    elif text == "C":
+        scvalue.set("")
+        screen.update()
+
+    else:
+        scvalue.set(scvalue.get() + text)
+        screen.update()                        #@ to update the screen with the widgets pressed
 
 
-class calculate():
-
-    def __init__(self):
-        self.root = Tk()
-        self.root.title("Calculator")
-        self.root.geometry("370x220")
-
-        self.resultwindow = Entry(self.root)
-        self.resultwindow.grid(row=0,column=0,columnspan=6)
-        self.resultwindow.config(font=("Arial", 18))
-        self.resultwindow.focus_set()  # Sets focus on the input text area
-
-        # Buttons
-        self.button1 = Button(self.root, text="1", width=3, command=lambda:self.ins('1'))
-        self.button1.grid(row=1,column=0, padx=3, pady=3)
-        self.button1.config(font=("Arial", 18))
-
-        self.button2 = Button(self.root, text="2", width=3, command=lambda:self.ins('2'))
-        self.button2.grid(row=1, column=1, padx=3, pady=3)
-        self.button2.config(font=("Arial", 18))
-
-        self.button3 = Button(self.root, text="3", width=3, command=lambda:self.ins('3'))
-        self.button3.grid(row=1, column=2, padx=3, pady=3)
-        self.button3.config(font=("Arial", 18))
-
-        self.button4 = Button(self.root, text="4", width=3, command=lambda:self.ins('4'))
-        self.button4.grid(row=2, column=0, padx=3, pady=3)
-        self.button4.config(font=("Arial", 18))
-
-        self.button5 = Button(self.root, text="5", width=3, command=lambda:self.ins('5'))
-        self.button5.grid(row=2, column=1, padx=3, pady=3)
-        self.button5.config(font=("Arial", 18))
-
-        self.button6 = Button(self.root, text="6", width=3, command=lambda:self.ins('6'))
-        self.button6.grid(row=2, column=2, padx=3, pady=3)
-        self.button6.config(font=("Arial", 18))
-
-        self.button7 = Button(self.root, text="7", width=3, command=lambda:self.ins('7'))
-        self.button7.grid(row=3, column=0, padx=3, pady=3)
-        self.button7.config(font=("Arial", 18))
-
-        self.button8 = Button(self.root, text="8", width=3, command=lambda:self.ins('8'))
-        self.button8.grid(row=3, column=1, padx=3, pady=3)
-        self.button8.config(font=("Arial", 18))
-
-        self.button9 = Button(self.root, text="9", width=3, command=lambda:self.ins('9'))
-        self.button9.grid(row=3, column=2, padx=3, pady=3)
-        self.button9.config(font=("Arial", 18))
-
-        self.button0 = Button(self.root, text="0", width=3, command=lambda: self.ins('0'))
-        self.button0.grid(row=4, column=0, padx=3, pady=3)
-        self.button0.config(font=("Arial", 18))
-
-        self.button_open = Button(self.root, text="(", width=3, command=lambda: self.ins('('))
-        self.button_open.grid(row=4, column=1, padx=3, pady=3)
-        self.button_open.config(font=("Arial", 18))
-
-        self.button_close = Button(self.root, text=")", width=3, command=lambda: self.ins(')'))
-        self.button_close.grid(row=4, column=2, padx=3, pady=3)
-        self.button_close.config(font=("Arial", 18))
-
-        # Operations Buttons
-
-        self.buttonplus = Button(self.root, text="+", width=3, command=lambda:self.ins('+'))
-        self.buttonplus.grid(row=1, column=3, padx=3, pady=3)
-        self.buttonplus.config(font=("Arial", 18))
-
-        self.buttonminus = Button(self.root, text="-", width=3, command=lambda:self.ins('-'))
-        self.buttonminus.grid(row=1, column=4, padx=3, pady=3)
-        self.buttonminus.config(font=("Arial", 18))
-
-        self.buttondivide = Button(self.root, text="/", width=3, command=lambda:self.ins('/'))
-        self.buttondivide.grid(row=2, column=3, padx=3, pady=3)
-        self.buttondivide.config(font=("Arial", 18))
-
-        self.buttonmultiply = Button(self.root, text="*", width=3, command=lambda:self.ins('*'))
-        self.buttonmultiply.grid(row=2, column=4, padx=3, pady=3)
-        self.buttonmultiply.config(font=("Arial", 18))
-
-        self.buttoncancel = Button(self.root, text="C", width=3, command=lambda: self.cancel())
-        self.buttoncancel.grid(row=3, column=4, padx=3, pady=3)
-        self.buttoncancel.config(font=("Arial", 18))
-
-        self.buttondeleteall = Button(self.root, text="Del", width=3, command=lambda: self.delete_all())
-        self.buttondeleteall.grid(row=3, column=3, padx=3, pady=3)
-        self.buttondeleteall.config(font=("Arial", 18))
-
-        self.buttonresult = Button(self.root, text="=", width=6, command=lambda:self.calculate())
-        self.buttonresult.grid(row=4, column=3, padx=3, pady=3, columnspan=2)
-        self.buttonresult.config(font=("Arial", 18))
-
-        self.root.mainloop()
-
-    def ins(self,val):
-        self.resultwindow.insert(END, val)
-
-    def cancel(self):
-        self.resultwindow.delete(0, 'end')
-
-    def delete_all(self):
-        x = self.resultwindow.get()
-        self.resultwindow.delete(0, 'end')
-        y = x[:-1]
-        self.resultwindow.insert(0, y)
-
-    def calculate(self):
-        x = self.resultwindow.get()
-        answer = eval(x)
-        self.resultwindow.delete(0, 'end')
-        self.resultwindow.insert(0, answer)
+root=Tk()
+root.geometry("390x498")
+root.minsize(390,498)
+root.maxsize(390,498)
+root.title("GUI Calculator -By Deepraj")
+root.wm_iconbitmap("calculator_14445.ico")
 
 
-if __name__ == "__main__":
-    calculate()
+
+
+#$ Moving to Screen
+scvalue=StringVar()
+scvalue.set("")
+screen=Entry(root,textvar=scvalue,font="Comicsansms 30",bg="#B5BABA",relief=SUNKEN)
+screen.pack(pady=10,padx=4)
+
+#^ BAsic
+f1=Frame(root,bg="#EE5537",height=20,width=30)
+b=Button(f1,text="C",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+b=Button(f1,text="/",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=E)
+b.bind("<Button-1>",click)
+b=Button(f1,text="-",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=E)
+b.bind("<Button-1>",click)
+
+f1.pack(anchor=NW)
+
+f1=Frame(root,bg="#EE5537",height=20,width=30)
+
+b=Button(f1,text="+",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=E)
+b.bind("<Button-1>",click)
+b=Button(f1,text="*",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+b=Button(f1,text="=",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+f1.pack(anchor=NW)
+
+
+#! First Row Buttons
+f1=Frame(root,bg="#EE5537",height=20,width=30)
+b=Button(f1,text="7",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+b=Button(f1,text="8",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+b=Button(f1,text="9",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+f1.pack(anchor=NW)
+
+#^ Second row Buttons
+
+f1=Frame(root,bg="#EE5537",height=20,width=30)
+b=Button(f1,text="4",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+b=Button(f1,text="5",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+b=Button(f1,text="6",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+f1.pack(anchor=NW)
+
+#* Third row Buttons
+f1=Frame(root,bg="#EE5537",padx=0,height=20,width=30)
+b=Button(f1,text="1",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+b=Button(f1,text="2",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+b=Button(f1,text="3",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+f1.pack(anchor=NW)
+
+#@ Fourth row Buttons
+f1=Frame(root,bg="#EE5537",height=20,width=20)
+b=Button(f1,text="00",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+b=Button(f1,text="0",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+b=Button(f1,text=".",font="consolas 19",bg="#E8F2E6",width=8)
+b.pack(side=LEFT,padx=3,pady=2,anchor=W)
+b.bind("<Button-1>",click)
+f1.pack(anchor=NW)
+
+#% Thanks Func
+def thanks():
+    tmb.showinfo("Feedback-Window","Would you like to give us a 5⭐\n Enjoy Your day....")
+
+#$ Thanks Note
+f1=Frame(root,bg="#EE5537",height=10,width=15)
+b=Button(f1,text="Share your\nExperience⭐",font="consolas 19",bg="#E8F2E6",width=12,command=thanks)
+b.pack(side=BOTTOM,padx=3,pady=4,anchor=W)
+f1.pack(anchor=S)
+
+root.mainloop()
